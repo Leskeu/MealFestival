@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 struct Workshop : Identifiable{
     var id : UUID
     var workshopName : String
