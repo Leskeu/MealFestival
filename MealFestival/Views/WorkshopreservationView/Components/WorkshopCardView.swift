@@ -15,22 +15,39 @@ struct WorkshopCardView: View {
             ZStack {
                 VStack(alignment:
                         .leading,
-                       spacing: 16
+                       spacing: 12
                 ) {
                     Text(workshop.name)
                         .foregroundStyle(.black)
-                        .font(fontMontserrat)
+                        .font(.montserrat(.extrabold, size: 20))
                     HStack {
                         Text(workshop.date.time)
+                        Spacer()
                         Text(workshop.date.day)
+                            .font(.montserrat(.semibold, size: 20))
+                        Spacer()
                         Text(workshop.date.date)
                     }
                     HStack {
-                        Text("<")
-                            .font(.title)
-                        Text(String(workshop.places)+" "+"places left")
+                        Button {
+                            
+                        } label: {
+                            Image("chevron")
+                                .resizable()
+                                .frame(width: 30, height: 25)
+                                .padding(.trailing, 10)
+                        }
+
+                        
+                        HStack(spacing: 0){
+                            Text(String(workshop.places))
+                                .font(.montserrat(.semibold, size: 18))
+                            Text(" "+"places left")
+                        }
+                        Spacer()
                         Text(workshop.status)
                             .foregroundStyle(.white)
+                            .font(.montserrat(.semibold, size: 20))
                             .padding(.horizontal, 24)
                             .padding(.vertical, 8)
                             .background(
@@ -45,7 +62,7 @@ struct WorkshopCardView: View {
                             )
                     }
                 }
-                
+                .font(.montserrat(.regular, size: 18))
                 .frame(maxWidth: 350)
                 .padding(16)
                 .background(.white)
@@ -68,5 +85,3 @@ struct mockWorkshop {
 }
 
 var workshop = mockWorkshop()
-
-let fontMontserrat: Font = Font.custom("Montserrat", size: 18)
