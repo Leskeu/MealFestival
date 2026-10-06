@@ -11,7 +11,7 @@ import SwiftUI
 struct MealFestivalApp: App {
     var body: some Scene {
         WindowGroup {
-            ConnexionView()
+            LoginView()
         }
     }
 }
