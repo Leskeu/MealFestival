@@ -40,26 +40,30 @@ struct WorkshopCardView: View {
 
                         
                         HStack(spacing: 0){
-                            Text(String(workshop.places))
+                            Text(String(workshop.spots))
                                 .font(.montserrat(.semibold, size: 18))
-                            Text(" "+"places left")
+                            Text(" "+"spots left")
                         }
                         Spacer()
-                        Text(workshop.status)
-                            .foregroundStyle(.white)
-                            .font(.montserrat(.semibold, size: 20))
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, 8)
-                            .background(
-                                UnevenRoundedRectangle(
-                                    topLeadingRadius: 25,
-                                    bottomLeadingRadius: 8,
-                                    bottomTrailingRadius: 25,
-                                    topTrailingRadius: 8,
-                                    style: .continuous
+                        Button {
+                            
+                        } label: {
+                            Text(workshop.status)
+                                .foregroundStyle(.white)
+                                .font(.montserrat(.semibold, size: 20))
+                                .padding(.horizontal, 24)
+                                .padding(.vertical, 8)
+                                .background(
+                                    UnevenRoundedRectangle(
+                                        topLeadingRadius: 25,
+                                        bottomLeadingRadius: 8,
+                                        bottomTrailingRadius: 25,
+                                        topTrailingRadius: 8,
+                                        style: .continuous
+                                    )
+                                    .fill(Color.charcoal)
                                 )
-                                .fill(Color.charcoal)
-                            )
+                        }
                     }
                 }
                 .font(.montserrat(.regular, size: 18))
@@ -76,12 +80,15 @@ struct WorkshopCardView: View {
     WorkshopCardView()
 }
 
-
+// mockdata
 struct mockWorkshop {
     let name = "Homemade Burger"
     let date = (time: "19h-20h", day: "Thursday", date: "15 Oct")
-    let places = 15
+    let spots = 15
+    let maxSpots = 21
     let status = "Participate"
+    let category = "Street Food"
+    let description = "Discover our homemade burger workshop. Make your own borger from A to Z with fresh products, delicious sauces and salades. A fun group activity for all ages."
 }
 
 var workshop = mockWorkshop()
