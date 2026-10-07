@@ -10,72 +10,86 @@ import SwiftUI
 struct WorkshopCardView: View {
     
     var body: some View {
-        // background during development
-        ZStack {
-            Color.charcoal
-                .ignoresSafeArea()
-            ZStack(alignment: .bottomTrailing) {
-                VStack(alignment:
-                        .leading,
-                       spacing: 12
-                ) {
-                    Text(workshop.name)
-                        .foregroundStyle(.black)
-                        .font(.montserrat(.extrabold, size: 20))
-                    HStack {
-                        Text(workshop.date.time)
-                        Spacer()
-                        Text(workshop.date.day)
-                            .font(.montserrat(.semibold, size: 18))
-                        Spacer()
-                        Text(workshop.date.date)
-                    }
-                    HStack {
-                        Button {
-                            
-                        } label: {
-                            Image("chevron")
-                                .resizable()
-                                .frame(width: 30, height: 25)
-                                .padding(.trailing, 10)
-                        }
-
-                        
-                        HStack(spacing: 0){
-                            Text(String(workshop.spots))
-                                .font(.montserrat(.semibold, size: 18))
-                            Text(" "+"spots left")
-                        }
-                        Spacer()
-                        Button {
-                            
-                        } label: {
-                            Text(workshop.status)
-                                .foregroundStyle(.white)
-                                .font(.montserrat(.semibold, size: 20))
-                                .padding(.horizontal, 24)
-                                .padding(.vertical, 8)
-                                .background(
-                                    mockVM.buttonForm(workshop.status)
-                                    .fill(mockVM.buttonColor(workshop.status))
-                                )
-                        }
-                    }
-                }
-                .font(.montserrat(.regular, size: 18))
-                .frame(maxWidth: .infinity)
-                .padding(16)
-                .background(.white)
-                .cornerRadius(20)
+        VStack(alignment:
+                .leading,
+               spacing: 12
+        ) {
+            Text(workshop.name)
+                .foregroundStyle(.black)
+                .font(.montserrat(.extrabold, size: 20))
+            HStack {
+                Text(workshop.date.time)
+                Spacer()
+                Text(workshop.date.day)
+                    .font(.montserrat(.semibold, size: 18))
+                Spacer()
+                Text(workshop.date.date)
             }
-            .padding(10)
-            
+            HStack {
+                Button {
+                    
+                } label: {
+                    Image("chevron")
+                        .resizable()
+                        .frame(width: 30, height: 25)
+                        .padding(.trailing, 10)
+                }
+                
+                
+                HStack(spacing: 0){
+                    Text(String(workshop.spots))
+                        .font(.montserrat(.semibold, size: 18))
+                    Text(" "+"spots left")
+                }
+                Spacer()
+                Button {
+                    
+                } label: {
+                    Text(workshop.status)
+                        .foregroundStyle(.white)
+                        .font(.montserrat(.semibold, size: 20))
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 8)
+                        .background(
+                            mockVM.buttonForm(workshop.status)
+                                .fill(mockVM.buttonColor(workshop.status))
+                        )
+                }
+            }
+        }
+        .font(.montserrat(.regular, size: 18))
+        .frame(maxWidth: .infinity)
+        .padding(16)
+        .background(.white)
+        .cornerRadius(20)
+        .overlay(alignment: .bottomTrailing) {
+            if workshop.status == "Reserved" {
+                Text(workshop.status)
+                    .foregroundStyle(.white)
+                    .font(.montserrat(.semibold, size: 20))
+                    .padding(.horizontal, 40)
+                    .padding(.bottom, 24)
+                    .padding(.top, 8)
+                    .background(UnevenRoundedRectangle(
+                        topLeadingRadius: 25,
+                        bottomLeadingRadius: 0,
+                        bottomTrailingRadius: 20,
+                        topTrailingRadius: 0,
+                        style: .continuous
+                    )
+                        .fill(mockVM.buttonColor(workshop.status))
+                    )
+            }
         }
     }
-} //// background during development
+}
 
 #Preview {
-    WorkshopCardView()
+    ZStack {
+        Color.charcoal.ignoresSafeArea()
+        WorkshopCardView()
+            .padding(16)
+    }
 }
 
 // mockdata
