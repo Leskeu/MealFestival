@@ -24,7 +24,7 @@ struct WorkshopCardView: View {
                         Text(workshop.date.time)
                         Spacer()
                         Text(workshop.date.day)
-                            .font(.montserrat(.semibold, size: 20))
+                            .font(.montserrat(.semibold, size: 18))
                         Spacer()
                         Text(workshop.date.date)
                     }
@@ -87,6 +87,8 @@ struct mockWorkshop {
     let spots = 15
     let maxSpots = 21
     let status = "Participate"
+//    let status = "Reserved"
+//    let status = "Cancel"
     let category = "Street Food"
     let description = "Discover our homemade burger workshop. Make your own borger from A to Z with fresh products, delicious sauces and salades. A fun group activity for all ages."
 }

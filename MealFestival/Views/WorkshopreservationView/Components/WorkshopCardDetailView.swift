@@ -33,13 +33,15 @@ struct WorkshopCardDetailView: View {
                             }
                     }
                     Text(workshop.category)
+                    
+                        .font(.montserrat(.semibold, size: 18))
                     Text(workshop.description)
                         .font(.montserrat(.regular, size: 16))
                     HStack {
                         Text(workshop.date.time)
                         Spacer()
                         Text(workshop.date.day)
-                            .font(.montserrat(.semibold, size: 20))
+                            .font(.montserrat(.semibold, size: 18))
                         Spacer()
                         Text(workshop.date.date)
                     }
@@ -52,7 +54,7 @@ struct WorkshopCardDetailView: View {
                     // where button was in card view, padding on the text leaves space for the button in the z stack
                 }
                 .font(.montserrat(.regular, size: 18))
-                .frame(maxWidth: 350)
+                .frame(maxWidth: .infinity)
                 .padding(16)
                 .background(.white)
                 .cornerRadius(20)
@@ -63,7 +65,7 @@ struct WorkshopCardDetailView: View {
                     Text(workshop.status)
                         .foregroundStyle(.white)
                         .font(.montserrat(.semibold, size: 20))
-                        .frame(maxWidth: 350)
+                        .frame(maxWidth: .infinity)
                         .padding(.horizontal, 24)
                         .padding(.vertical, 8)
                         .background(
@@ -77,6 +79,9 @@ struct WorkshopCardDetailView: View {
                             .fill(Color.jungle)
                         )
                 }
+                .padding(.bottom, 2)
+                .padding(.horizontal, 2)
+                
             }
             .padding(16)
         }
