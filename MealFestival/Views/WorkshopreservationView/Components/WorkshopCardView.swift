@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct WorkshopCardView: View {
+    
     var body: some View {
+        // background during development
         ZStack {
             Color.charcoal
                 .ignoresSafeArea()
-            ZStack {
+            ZStack(alignment: .bottomTrailing) {
                 VStack(alignment:
                         .leading,
                        spacing: 12
@@ -54,27 +56,23 @@ struct WorkshopCardView: View {
                                 .padding(.horizontal, 24)
                                 .padding(.vertical, 8)
                                 .background(
-                                    UnevenRoundedRectangle(
-                                        topLeadingRadius: 25,
-                                        bottomLeadingRadius: 8,
-                                        bottomTrailingRadius: 25,
-                                        topTrailingRadius: 8,
-                                        style: .continuous
-                                    )
-                                    .fill(Color.charcoal)
+                                    mockVM.buttonForm(workshop.status)
+                                    .fill(mockVM.buttonColor(workshop.status))
                                 )
                         }
                     }
                 }
                 .font(.montserrat(.regular, size: 18))
-                .frame(maxWidth: 350)
+                .frame(maxWidth: .infinity)
                 .padding(16)
                 .background(.white)
                 .cornerRadius(20)
             }
+            .padding(10)
+            
         }
     }
-}
+} //// background during development
 
 #Preview {
     WorkshopCardView()
@@ -86,11 +84,13 @@ struct mockWorkshop {
     let date = (time: "19h-20h", day: "Thursday", date: "15 Oct")
     let spots = 15
     let maxSpots = 21
-    let status = "Participate"
-//    let status = "Reserved"
+//    let status = "Participate"
+    let status = "Reserved"
 //    let status = "Cancel"
     let category = "Street Food"
     let description = "Discover our homemade burger workshop. Make your own borger from A to Z with fresh products, delicious sauces and salades. A fun group activity for all ages."
 }
 
 var workshop = mockWorkshop()
+
+var mockVM = WorkshopViewModel()

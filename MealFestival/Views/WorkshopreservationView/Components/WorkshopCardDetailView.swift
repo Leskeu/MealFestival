@@ -65,9 +65,8 @@ struct WorkshopCardDetailView: View {
                     Text(workshop.status)
                         .foregroundStyle(.white)
                         .font(.montserrat(.semibold, size: 20))
-                        .frame(maxWidth: .infinity)
-                        .padding(.horizontal, 24)
                         .padding(.vertical, 8)
+                        .frame(maxWidth: .infinity)
                         .background(
                             UnevenRoundedRectangle(
                                 topLeadingRadius: 0,
@@ -76,7 +75,7 @@ struct WorkshopCardDetailView: View {
                                 topTrailingRadius: 0,
                                 style: .continuous
                             )
-                            .fill(Color.jungle)
+                            .fill(mockVM.buttonColor(workshop.status))
                         )
                 }
                 .padding(.bottom, 2)
