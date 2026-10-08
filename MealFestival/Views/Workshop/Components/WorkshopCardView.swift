@@ -48,7 +48,7 @@ struct WorkshopCardView: View {
                     Text(workshop.status)
                         .foregroundStyle(.white)
                         .font(.montserrat(.semibold, size: 20))
-                        .padding(.horizontal, 24)
+                        .padding(.horizontal, 20)
                         .padding(.vertical, 8)
                         .background(
                             mockVM.buttonForm(workshop.status)
@@ -105,6 +105,14 @@ struct mockWorkshop {
     let description = "Discover our homemade burger workshop. Make your own borger from A to Z with fresh products, delicious sauces and salades. A fun group activity for all ages."
 }
 
+
 var workshop = mockWorkshop()
 
 var mockVM = WorkshopViewModel()
+
+
+let workshops = [ mockWorkshop(),
+                  mockWorkshop(),
+                  mockWorkshop(),
+                  mockWorkshop()
+]
