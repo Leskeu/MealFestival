@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Category : Identifiable {
+struct Category : Identifiable, Decodable {
     var id : UUID
     var categoryName : String
 }
