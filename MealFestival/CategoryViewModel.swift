@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 @Observable
-final class RegisterViewModel: Sendable {
+final class WorkshopsViewModel: Sendable {
     
     func getWorkshops() async -> [Category] {
         let service = WebService()
