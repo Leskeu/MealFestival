@@ -15,3 +15,12 @@ struct User : Identifiable {
     var role : String
     var created_date : Date
 }
+
+struct UserToken: Decodable {
+    var token: String
+}
+
+struct LoginRequestDTO: Encodable {
+    let email: String
+    let password: String
+}

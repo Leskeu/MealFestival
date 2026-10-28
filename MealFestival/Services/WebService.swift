@@ -57,7 +57,7 @@ class WebService {
         }
         
         switch httpResponse.statusCode {
-            case 201...204:
+            case 200...299:
                 let result = try JSONDecoder().decode(responseType, from: data)
                 return result
             default:

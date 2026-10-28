@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct Workshop : Identifiable{
+struct Workshop : Identifiable, Decodable {
     var id : UUID
-    var workshopName : String
-    var categoryId : Int
+    var name : String
+    var categoryName : String
     var startTime : String
     var endTime : String
-    var capacityMax : Int
+    var maxCapacity : Int
     var totalSubscribers : Int
     var description : String
 }
