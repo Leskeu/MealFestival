@@ -10,6 +10,7 @@ import Foundation
 
 class WebService {
     private let session: URLSession
+    private let apiRoot: String = "http://192.168.1.93:8081/"
     
     init(sessionConfig: URLSessionConfiguration = .default) {
         self.session = URLSession(configuration: sessionConfig)
@@ -23,7 +24,8 @@ class WebService {
         body: Encodable? = nil,
         token: String? = nil
     ) async throws -> T {
-        guard var urlBuilder = URLComponents(string: url) else {
+        
+        guard var urlBuilder = URLComponents(string: self.apiRoot + url) else {
             throw URLError(.badURL)
         }
         
@@ -49,6 +51,8 @@ class WebService {
             
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
+        
+        print(request)
         
         let (data, response) =  try await URLSession.shared.data(for: request)
         

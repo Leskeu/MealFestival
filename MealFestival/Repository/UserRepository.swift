@@ -12,13 +12,12 @@ import Foundation
 final class UserRepository {
     
     let webService = WebService()
-    let baseUrl = "http://localhost:8081"
     
     //get token from login form
     func getToken(loginRequestDTO: LoginRequestDTO) async -> UserToken? {
         do {
             let user = try await webService.apiCall(
-                url: self.baseUrl+"/login",
+                url: "/login",
                 method: "POST",
                 responseType: UserToken.self,
                 body: loginRequestDTO

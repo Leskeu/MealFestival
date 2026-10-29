@@ -12,7 +12,7 @@ import Foundation
 final class WorkshopRepository {
     
     let webService = WebService()
-    let baseUrl = "http://localhost:8081/workshops"
+    let baseUrl = "workshops"
     
     //get all workshops
     func getWorkshops() async -> [Workshop] {
@@ -31,13 +31,13 @@ final class WorkshopRepository {
     }
     
     //get workshops reserved from an user
-    func getReservedWorkshopFromUser(userToken: UserToken) async -> [Workshop] {
+    func getReservedWorkshopFromUser(token: String) async -> [Workshop] {
         do {
             let workshops = try await webService.apiCall(
                 url: self.baseUrl+"/reservations",
                 method: "GET",
                 responseType: [Workshop].self,
-                token: userToken.token
+                token: token
             )
             return workshops
             
