@@ -10,7 +10,7 @@ import Observation
 
 @Observable
 class RegisterViewModel {
-
+    var name = ""
     var email = ""
     var password = ""
     var confirmPassword = ""
@@ -21,17 +21,23 @@ class RegisterViewModel {
         errorMessage = ""
         successMessage = ""
 
-        if email.isEmpty || password.isEmpty || confirmPassword.isEmpty {
+        
+        
+        if name.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty {
             return errorMessage = "Please fill in all the fields."
           
-        }    
+        }  
+        if name .count < 3 {
+            return errorMessage = "The password must contain at least 3 characters."
+
+        }
         if !isValidEmail(email) {
             return errorMessage = "Please enter a valid email address."
             }
 
         if password.count < 8 {
             return errorMessage = "The password must contain at least 8 characters."
-            }
+        }
 
         if password != confirmPassword {
             return errorMessage = "The passwords do not match."
