@@ -42,6 +42,7 @@ struct LoginView: View {
                         .background(.white)
                         .cornerRadius(20)
                         .frame(maxWidth: 350)
+                        .textInputAutocapitalization(.never)
                 }
                 
                 if let errorMessage = loginVM.errorMessage {

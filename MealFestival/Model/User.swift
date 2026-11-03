@@ -7,13 +7,12 @@
 
 import Foundation
 
-struct User : Identifiable {
+struct User : Identifiable, Decodable {
     var id : UUID
-    var userName : String
-    var password : String
+    var name : String
     var email : String
     var role : String
-    var created_date : Date
+    var createdAt : Date
 }
 
 struct UserToken: Decodable {
@@ -23,4 +22,10 @@ struct UserToken: Decodable {
 struct LoginRequestDTO: Encodable {
     let email: String
     let password: String
+}
+
+struct RegisterRequestDTO: Encodable {
+    let email: String
+    let password: String
+    let name: String
 }

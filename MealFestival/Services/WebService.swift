@@ -10,7 +10,7 @@ import Foundation
 
 class WebService {
     private let session: URLSession
-    private let apiRoot: String = "http://192.168.1.93:8081/"
+    private let apiRoot: String = "http://localhost:8081/"
     
     init(sessionConfig: URLSessionConfiguration = .default) {
         self.session = URLSession(configuration: sessionConfig)
@@ -52,17 +52,18 @@ class WebService {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
         
-        print(request)
-        
         let (data, response) =  try await URLSession.shared.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse)
         }
         
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        
         switch httpResponse.statusCode {
             case 200...299:
-                let result = try JSONDecoder().decode(responseType, from: data)
+                let result = try decoder.decode(responseType, from: data)
                 return result
             default:
                 throw URLError(.badServerResponse)

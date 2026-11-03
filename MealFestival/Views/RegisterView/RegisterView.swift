@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RegisterView: View {
+    @Environment(UserStore.self) private var userStore
 
     @State private var viewModel = RegisterViewModel()
 
@@ -55,7 +56,13 @@ struct RegisterView: View {
                 }
 
                 Button("Register") {
-                    viewModel.validate()
+                    Task {
+                        let token: String? = await viewModel.setRegisterRequest()
+
+                        if let token = token {
+                            userStore.setToken(token: token)
+                        }
+                    }
                 }
                 .foregroundStyle(.white)
                 .font(.title3)
@@ -78,4 +85,5 @@ struct RegisterView: View {
 
 #Preview {
     RegisterView()
+        .environment(UserStore())
 }
