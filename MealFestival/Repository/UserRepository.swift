@@ -29,5 +29,21 @@ final class UserRepository {
         }
         return nil
     }
+    //register form
+    func register(registerResquest: RegisterRequestDTO) async -> UserDTO? {
+        do {
+            let user : UserDTO = try await webService.apiCall(
+                url: "/users",
+                method: "POST",
+                responseType: UserDTO.self,
+                body: registerResquest, 
+            )
+            return user
+            
+        } catch {
+            print("Erreur API : \(error.localizedDescription), \(error)")
+        }
+        return nil
+    }
     
 }

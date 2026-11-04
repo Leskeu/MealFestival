@@ -13,7 +13,7 @@ class RegisterViewModel {
   
     var errorMessage = ""
     var successMessage = ""
-    private let registerRepository = RegisterRepository()
+    private let registerRepository = UserRepository()
     
     var registerRequestDTO: RegisterRequestDTO?
     
