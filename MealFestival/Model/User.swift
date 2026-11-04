@@ -24,3 +24,16 @@ struct LoginRequestDTO: Encodable {
     let email: String
     let password: String
 }
+
+
+struct RegisterRequestDTO: Encodable {
+    let name: String
+    let email: String
+    let password: String
+}
+
+struct UserDTO: Decodable {
+    let id: UUID
+    let name: String
+    let email: String
+}

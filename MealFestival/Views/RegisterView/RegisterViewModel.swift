@@ -10,39 +10,42 @@ import Observation
 
 @Observable
 class RegisterViewModel {
-    var name = ""
-    var email = ""
-    var password = ""
-    var confirmPassword = ""
+  
     var errorMessage = ""
     var successMessage = ""
-
-    func validate() {
+    private let registerRepository = RegisterRepository()
+    
+    var registerRequestDTO: RegisterRequestDTO?
+    
+    
+    func validate(name: String,email: String, password: String,confirmPassword: String) -> Bool  {
         errorMessage = ""
         successMessage = ""
-
-        
         
         if name.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty {
-            return errorMessage = "Please fill in all the fields."
-          
+           errorMessage = "Please fill in all the fields."
+            return false
         }  
         if name .count < 3 {
-            return errorMessage = "The password must contain at least 3 characters."
-
+             errorMessage = "The password must contain at least 3 characters."
+            return false
         }
         if !isValidEmail(email) {
-            return errorMessage = "Please enter a valid email address."
+             errorMessage = "Please enter a valid email address."
+            return false
             }
 
         if password.count < 8 {
-            return errorMessage = "The password must contain at least 8 characters."
+             errorMessage = "The password must contain at least 8 characters."
+            return false
         }
 
         if password != confirmPassword {
-            return errorMessage = "The passwords do not match."
+             errorMessage = "The passwords do not match."
+            return false
              }
         successMessage = "Registration successful!"
+        return true
     }
 
     private func isValidEmail(_ email: String) -> Bool {
@@ -51,5 +54,26 @@ class RegisterViewModel {
             of: emailRegex,
             options: .regularExpression
         ) != nil
+    }
+    
+    
+    
+    func register(name :String,email: String, password: String, confirmPassword : String) async -> UserDTO? {
+        guard validate(name: name, email: email, password: password, confirmPassword: confirmPassword) else {
+            return nil
+        }
+           let request = RegisterRequestDTO(
+                name: name.trimmingCharacters(in: .whitespacesAndNewlines),
+                email: email.trimmingCharacters(in: .whitespacesAndNewlines),
+                password: password
+           )
+        let user = await registerRepository.register(
+            registerResquest: request)
+        if user != nil {
+            successMessage = "Registration successful!"
+        } else {
+            errorMessage = "Registration failed. Please try again."
+        }
+        return user
     }
 }
