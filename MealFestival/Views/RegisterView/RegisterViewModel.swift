@@ -27,7 +27,7 @@ class RegisterViewModel {
             return false
         }  
         if name .count < 3 {
-             errorMessage = "The password must contain at least 3 characters."
+             errorMessage = "The name must contain at least 3 characters."
             return false
         }
         if !isValidEmail(email) {
@@ -44,7 +44,7 @@ class RegisterViewModel {
              errorMessage = "The passwords do not match."
             return false
              }
-        successMessage = "Registration successful!"
+        
         return true
     }
 
@@ -71,9 +71,13 @@ class RegisterViewModel {
             registerResquest: request)
         if user != nil {
             successMessage = "Registration successful!"
+            errorMessage = ""
+                  return user
         } else {
             errorMessage = "Registration failed. Please try again."
+            successMessage = ""
+                   return nil
         }
-        return user
+      
     }
 }

@@ -42,6 +42,7 @@ final class UserRepository {
             
         } catch {
             print("Erreur API : \(error.localizedDescription), \(error)")
+        
         }
         return nil
     }
