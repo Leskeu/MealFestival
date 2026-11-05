@@ -14,7 +14,7 @@ class WorkshopCardViewModel {
 	
 	func participate(workshopID: UUID, token: String) async -> Bool {
 		let createReservationDTO = CreateReservationDTO(workshopID: workshopID)
-		return await reservationsRepository.askToParticipate(createReservationDTO: createReservationDTO, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmF0aW9uIjoxNzkzODg2MDk3Ljg0MjM3NiwiaWQiOiI0QzEwNzA3Qi00NDI1LTRFRTktQUMzRC1BRDFDMkFCNUY0NEYifQ.xpwvTtf6UPKtMGuwnEiWlIh5EjceOY5c_Ch3YYKIBqQ")
+		return await reservationsRepository.askToParticipate(createReservationDTO: createReservationDTO, token: token)
 	}
 	
 }
@@ -108,16 +108,9 @@ struct WorkshopCardView: View {
 				if !expanded {
 					Button {
 						Task {
-							let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmF0aW9uIjoxNzkzODg2MDk3Ljg0MjM3NiwiaWQiOiI0QzEwNzA3Qi00NDI1LTRFRTktQUMzRC1BRDFDMkFCNUY0NEYifQ.xpwvTtf6UPKtMGuwnEiWlIh5EjceOY5c_Ch3YYKIBqQ"
-							
-							let result = await cardVM.participate(workshopID: workshop.id, token: token)
-							
-//							if let token = userStore.getToken() {
-//								let result = await cardVM.participate(workshopID: workshop.id, token: token)
-//								print(result)
-//							} else {
-//								print("no token")
-//							}
+							if let token = userStore.token {
+								_ = await cardVM.participate(workshopID: workshop.id, token: token)
+							}
 						}
 					} label: {
 						Text("Participate")

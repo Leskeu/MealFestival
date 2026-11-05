@@ -49,15 +49,19 @@ struct WorkshopListView: View {
                     if showReservation {
                         ReservationsButton(title: "Workshops", style: .red) {
                             Task {
-                                await workshopVM.getWorkshops()
-                                showReservation.toggle()
+                                if let token = userStore.token {
+                                    await workshopVM.getWorkshops(token: token)
+                                    showReservation.toggle()
+                                }
                             }
                         }
                     } else {
                         ReservationsButton(title: "My Reservations", style: .green) {
                             Task {
-                                await workshopVM.getReservedWorkshops()
-                                showReservation.toggle()
+                                if let token = userStore.token {
+                                    await workshopVM.getReservedWorkshops(token: token)
+                                    showReservation.toggle()
+                                }
                             }
                         }
                     }
@@ -87,7 +91,9 @@ struct WorkshopListView: View {
             }
         }
         .task {
-            await workshopVM.getWorkshops()
+            if let token = userStore.token {
+                await workshopVM.getWorkshops(token: token)
+            }
         }
     }
 }
