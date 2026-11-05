@@ -15,9 +15,9 @@ extension Font {
         
         var name: String {
             switch self {
-            case .regular: return "Montserrat-Regular"
-            case .semibold: return "Montserrat-Bold"
-            case .extrabold: return "Montserrat-ExtraBold"
+                case .regular: return "Montserrat-Regular"
+                case .semibold: return "Montserrat-Bold"
+                case .extrabold: return "Montserrat-ExtraBold"
             }
         }
     }

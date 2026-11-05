@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Workshop : Identifiable, Decodable {
+struct Workshop : Identifiable, Decodable, Equatable {
     var id : UUID
     var name : String
     var categoryName : String
