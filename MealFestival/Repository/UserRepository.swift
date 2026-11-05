@@ -30,21 +30,20 @@ final class UserRepository {
         return nil
     }
     //register form
-    func register(registerResquest: RegisterRequestDTO) async -> UserDTO? {
+    func register(registerRequest: RegisterRequestDTO) async throws -> UserDTO? {
         do {
             let user : UserDTO = try await webService.apiCall(
                 url: "/users",
                 method: "POST",
                 responseType: UserDTO.self,
-                body: registerResquest, 
+                body: registerRequest, 
             )
             return user
             
         } catch {
-            print("Erreur API : \(error.localizedDescription), \(error)")
-        
+            print("Erreur API : \(error.localizedDescription)")
+            throw error
         }
-        return nil
     }
     
 }

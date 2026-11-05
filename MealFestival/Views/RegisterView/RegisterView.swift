@@ -110,6 +110,9 @@ struct RegisterView: View {
                                 email: email, 
                                 password: password,
                                 confirmPassword: confirmPassword)
+                            if user != nil {
+                                      navigateToLogin = true
+                                  }
                            
                         }
                      
@@ -132,8 +135,10 @@ struct RegisterView: View {
                 .padding(.horizontal, 20)
             }
             .navigationDestination(isPresented: $navigateToLogin) {
-                       LoginView()
-                   }
+                LoginView()
+                    .environment(LoginViewModel())
+                    .environment(UserStore())
+            }
         
         }
     }}

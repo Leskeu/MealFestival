@@ -65,8 +65,13 @@ class WebService {
                 let result = try JSONDecoder().decode(responseType, from: data)
                 return result
             default:
-                throw URLError(.badServerResponse)
-        }
+            let errorResponse = String(data: data, encoding: .utf8) ?? ""
+
+             throw NSError(
+                 domain: "APIError",
+                 code: httpResponse.statusCode,
+                 userInfo: [NSLocalizedDescriptionKey: errorResponse]
+             )        }
     }
 }
 //URLSession    Communiquer avec le serveur.
