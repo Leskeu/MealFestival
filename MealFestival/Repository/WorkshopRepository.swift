@@ -31,30 +31,12 @@ final class WorkshopRepository {
     }
     
     
-    //get workshops unreserved from an user
-    func getUnReservedWorkshopFromUser(token: String) async -> [Workshop] {
+    func getAvailableWorkshops(token: String) async -> [WorkshopWithReservation] {
         do {
             let workshops = try await webService.apiCall(
-                url: self.baseUrl + "/available",
+                url: "reservations/available",
                 method: "GET",
-                responseType: [Workshop].self,
-                token: token
-            )
-            return workshops
-            
-        } catch {
-            print("Erreur API : \(error.localizedDescription), \(error)")
-        }
-        return []
-    }
-    
-    //get workshops reserved from an user
-    func getReservedWorkshopFromUser(token: String) async -> [Workshop] {
-        do {
-            let workshops = try await webService.apiCall(
-                url: self.baseUrl+"/reservations",
-                method: "GET",
-                responseType: [Workshop].self,
+                responseType: [WorkshopWithReservation].self,
                 token: token
             )
             return workshops

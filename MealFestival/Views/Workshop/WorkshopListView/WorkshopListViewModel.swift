@@ -11,16 +11,12 @@ import Observation
 @Observable
 class WorkshopViewModel {
 
-    var workshops: [Workshop] = []
+    var workshops: [WorkshopWithReservation] = []
 
     private let workshopRepository = WorkshopRepository()
 
     func getWorkshops(token: String) async {
-        workshops = await workshopRepository.getUnReservedWorkshopFromUser(token: token)
-    }
-    
-    func getReservedWorkshops(token: String) async {
-        workshops = await workshopRepository.getReservedWorkshopFromUser(token: token)
+        workshops = await workshopRepository.getAvailableWorkshops(token: token)
     }
     
     

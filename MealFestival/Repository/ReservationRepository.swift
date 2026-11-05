@@ -10,10 +10,10 @@ import Foundation
 @MainActor
 @Observable
 final class ReservationRepository {
-    
+
     let webService = WebService()
     let baseUrl = "reservations"
-    
+
     //participate
     func askToParticipate(createReservationDTO: CreateReservationDTO, token: String) async -> Bool {
         do {
@@ -23,17 +23,23 @@ final class ReservationRepository {
                 body: createReservationDTO,
                 token: token
             )
-            
+
             return true
-            
+
         } catch {
             print("Erreur API : \(error.localizedDescription), \(error)")
         }
         return false
     }
-    
+
     //cancel
-    
-    
-    
+    func askToCancel(reservationID: UUID, token: String) async throws {
+        try await webService.apiCallStatus(
+            url: self.baseUrl + "/cancel/" + reservationID.uuidString,
+            method: "DELETE",
+            token: token
+        )
+    }
+
+
 }

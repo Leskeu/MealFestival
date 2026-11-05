@@ -15,5 +15,13 @@ struct Workshop : Identifiable, Decodable, Equatable {
     var endTime : String
     var maxCapacity : Int
     var totalSubscribers : Int
+    var availableSpot : Int
     var description : String
+}
+
+struct WorkshopWithReservation: Identifiable, Decodable {
+    var workshopDTO: Workshop
+    var reservationDTO: Reservation?
+
+    var id: UUID { workshopDTO.id }
 }

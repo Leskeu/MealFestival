@@ -7,7 +7,16 @@ struct WorkshopListView: View {
     @State private var workshopVM = WorkshopViewModel()
     
     @State private var showReservation: Bool = false
-    
+
+    var displayedWorkshops: [WorkshopWithReservation] {
+        if showReservation {
+            return workshopVM.workshops.filter {
+                $0.reservationDTO?.status == "validée"
+            }
+        }
+
+        return workshopVM.workshops
+    }
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -22,12 +31,28 @@ struct WorkshopListView: View {
                     .padding(.leading, 16)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                if (workshopVM.workshops != []) {
+                if !displayedWorkshops.isEmpty {
                     VStack(alignment: .leading, spacing: 16) {
                         ScrollView {
-                            ForEach(workshopVM.workshops) { wk in
-                                WorkshopCardView(workshop: wk)
-                                    .environment(userStore)
+                            ForEach(displayedWorkshops) { item in
+                                WorkshopCardView(
+                                    workshop: item.workshopDTO,
+                                    reservationStatus: item.reservationDTO?.status,
+                                    reservationId: item.reservationDTO?.id,
+                                    showReservation: showReservation,
+                                    onParticipate: {
+                                        if let token = userStore.token {
+                                            await workshopVM.getWorkshops(token: token)
+                                            showReservation = true
+                                        }
+                                    },
+                                    onCancel: {
+                                        if let token = userStore.token {
+                                            await workshopVM.getWorkshops(token: token)
+                                        }
+                                    }
+                                )
+                                .environment(userStore)
                             }
                         }
                     }
@@ -48,21 +73,11 @@ struct WorkshopListView: View {
                 HStack(alignment: .center, spacing: 10) {
                     if showReservation {
                         ReservationsButton(title: "Workshops", style: .red) {
-                            Task {
-                                if let token = userStore.token {
-                                    await workshopVM.getWorkshops(token: token)
-                                    showReservation.toggle()
-                                }
-                            }
+                            showReservation = false
                         }
                     } else {
                         ReservationsButton(title: "My Reservations", style: .green) {
-                            Task {
-                                if let token = userStore.token {
-                                    await workshopVM.getReservedWorkshops(token: token)
-                                    showReservation.toggle()
-                                }
-                            }
+                            showReservation = true
                         }
                     }
                 }
@@ -80,16 +95,16 @@ struct WorkshopListView: View {
             }
         }
         .ignoresSafeArea()
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    userStore.deleteToken()
-                } label: {
-                    Image(systemName: "rectangle.portrait.and.arrow.right")
-                }
-                .tint(.white)
-            }
-        }
+//        .toolbar {
+//            ToolbarItem(placement: .topBarTrailing) {
+//                Button {
+//                    userStore.deleteToken()
+//                } label: {
+//                    Image(systemName: "rectangle.portrait.and.arrow.right")
+//                }
+//                .tint(.white)
+//            }
+//        }
         .task {
             if let token = userStore.token {
                 await workshopVM.getWorkshops(token: token)
