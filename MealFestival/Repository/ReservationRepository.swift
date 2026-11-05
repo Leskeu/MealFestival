@@ -17,7 +17,7 @@ final class ReservationRepository {
     //participate
     func askToParticipate(createReservationDTO: CreateReservationDTO, token: String) async -> Bool {
         do {
-            let reservation = try await webService.apiCallStatus(
+            try await webService.apiCallStatus(
                 url: self.baseUrl + "/participate",
                 method: "POST",
                 body: createReservationDTO,
