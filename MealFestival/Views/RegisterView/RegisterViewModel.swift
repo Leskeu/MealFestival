@@ -68,7 +68,7 @@ class RegisterViewModel {
             registerRequest = RegisterRequestDTO(
                 email: self.email.trimmingCharacters(in: .whitespacesAndNewlines),
                 password: self.password,
-                name: self.name
+                name: self.name.trimmingCharacters(in: .whitespacesAndNewlines)
             )
             
             print(registerRequest!)

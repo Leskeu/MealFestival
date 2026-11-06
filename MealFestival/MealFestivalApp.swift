@@ -21,7 +21,9 @@ struct MealFestivalApp: App {
                         WorkshopListView()
                     }
                 } else {
-                    LoginView()
+                    NavigationStack {
+                        LoginView()
+                    }
                 }
             }
             .environment(userStore)

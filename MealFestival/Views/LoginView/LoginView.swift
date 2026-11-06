@@ -88,7 +88,7 @@ struct LoginView: View {
                 }
                 .foregroundStyle(.white)
                 .font(.title3)
-                .disabled(isSubmitting)
+//                .disabled(isSubmitting)
             }
         }
     }
