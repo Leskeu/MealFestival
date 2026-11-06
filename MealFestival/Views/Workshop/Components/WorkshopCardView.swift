@@ -26,17 +26,18 @@ class WorkshopCardViewModel {
 
         let createReservationDTO = CreateReservationDTO(workshopID: workshopID)
 
-        let success = await reservationsRepository.askToParticipate(
-            createReservationDTO: createReservationDTO,
-            token: token
-        )
-
-        if !success {
-            errorMessage = "Participation failed. Please try again."
+        do {
+            try await reservationsRepository.askToParticipate(
+                createReservationDTO: createReservationDTO,
+                token: token
+            )
+            isLoading = false
+            return true
+        } catch {
+            errorMessage = error.localizedDescription
+            isLoading = false
+            return false
         }
-
-        isLoading = false
-        return success
     }
 
     func cancel(reservationID: UUID, token: String?) async -> Bool {

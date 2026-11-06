@@ -73,11 +73,21 @@ struct WorkshopListView: View {
                 HStack(alignment: .center, spacing: 10) {
                     if showReservation {
                         ReservationsButton(title: "Workshops", style: .red) {
-                            showReservation = false
+                            Task {
+                                if let token = userStore.token {
+                                    await workshopVM.getWorkshops(token: token)
+                                }
+                                showReservation = false
+                            }
                         }
                     } else {
                         ReservationsButton(title: "My Reservations", style: .green) {
-                            showReservation = true
+                            Task {
+                                if let token = userStore.token {
+                                    await workshopVM.getWorkshops(token: token)
+                                }
+                                showReservation = true
+                            }
                         }
                     }
                 }

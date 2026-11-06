@@ -96,14 +96,15 @@ class WebService {
         
         guard (200...299).contains(httpResponse.statusCode) else {
             var message = HTTPURLResponse.localizedString(forStatusCode: httpResponse.statusCode)
-            
-            if
-                let responseText = String(data: data, encoding: .utf8),
-                !responseText.isEmpty
-            {
+
+            if let errorJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let reason = errorJSON["reason"] as? String {
+                message = reason
+            } else if let responseText = String(data: data, encoding: .utf8),
+                      !responseText.isEmpty {
                 message = responseText
             }
-            
+
             throw APIError.httpError(statusCode: httpResponse.statusCode, message: message)
         }
 

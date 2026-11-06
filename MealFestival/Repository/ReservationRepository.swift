@@ -15,21 +15,13 @@ final class ReservationRepository {
     let baseUrl = "reservations"
 
     //participate
-    func askToParticipate(createReservationDTO: CreateReservationDTO, token: String) async -> Bool {
-        do {
-            try await webService.apiCallStatus(
-                url: self.baseUrl + "/participate",
-                method: "POST",
-                body: createReservationDTO,
-                token: token
-            )
-
-            return true
-
-        } catch {
-            print("Erreur API : \(error.localizedDescription), \(error)")
-        }
-        return false
+    func askToParticipate(createReservationDTO: CreateReservationDTO, token: String) async throws {
+        try await webService.apiCallStatus(
+            url: self.baseUrl + "/participate",
+            method: "POST",
+            body: createReservationDTO,
+            token: token
+        )
     }
 
     //cancel
