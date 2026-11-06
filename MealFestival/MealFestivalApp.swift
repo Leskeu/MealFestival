@@ -28,6 +28,7 @@ struct MealFestivalApp: App {
             }
             .environment(userStore)
             .environment(loginVM)
+            .preferredColorScheme(.light)
         }
     }
 }

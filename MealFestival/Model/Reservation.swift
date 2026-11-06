@@ -7,9 +7,11 @@
 
 import Foundation
 
-struct Reservation : Identifiable{
-    var id : UUID
-    var worshopId : Int
-    var userId : Int
-    var status : String
+struct Reservation: Identifiable, Decodable {
+    var id: UUID
+    var status: String
+}
+
+struct CreateReservationDTO: Encodable {
+    var workshopID: UUID
 }

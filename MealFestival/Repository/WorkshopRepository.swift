@@ -30,13 +30,13 @@ final class WorkshopRepository {
         return []
     }
     
-    //get workshops reserved from an user
-    func getReservedWorkshopFromUser(token: String) async -> [Workshop] {
+    
+    func getAvailableWorkshops(token: String) async -> [WorkshopWithReservation] {
         do {
             let workshops = try await webService.apiCall(
-                url: self.baseUrl+"/reservations",
+                url: "reservations/available",
                 method: "GET",
-                responseType: [Workshop].self,
+                responseType: [WorkshopWithReservation].self,
                 token: token
             )
             return workshops

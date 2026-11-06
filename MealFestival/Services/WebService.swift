@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 class WebService {
     private let session: URLSession
     private let apiRoot: String = "http://172.33.1.234:8081/"
@@ -16,7 +15,7 @@ class WebService {
         self.session = URLSession(configuration: sessionConfig)
     }
     
-    func apiCall<T:Decodable>(
+    func apiCall<T: Decodable>(
         url: String,
         method: String,
         queryParams: [String: String]? = nil,
@@ -24,7 +23,44 @@ class WebService {
         body: Encodable? = nil,
         token: String? = nil
     ) async throws -> T {
-        
+        let data = try await performRequest(
+            url: url,
+            method: method,
+            queryParams: queryParams,
+            body: body,
+            token: token
+        )
+
+        guard !data.isEmpty else {
+            throw APIError.emptyResponse
+        }
+
+        return try JSONDecoder().decode(responseType, from: data)
+    }
+
+    func apiCallStatus(
+        url: String,
+        method: String,
+        queryParams: [String: String]? = nil,
+        body: Encodable? = nil,
+        token: String? = nil
+    ) async throws {
+        _ = try await performRequest(
+            url: url,
+            method: method,
+            queryParams: queryParams,
+            body: body,
+            token: token
+        )
+    }
+
+    private func performRequest(
+        url: String,
+        method: String,
+        queryParams: [String: String]?,
+        body: Encodable?,
+        token: String?
+    ) async throws -> Data {
         guard var urlBuilder = URLComponents(string: self.apiRoot + url) else {
             throw URLError(.badURL)
         }
@@ -52,21 +88,26 @@ class WebService {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
         
-        let (data, response) =  try await URLSession.shared.data(for: request)
+        let (data, response) = try await session.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw URLError(.badServerResponse)
+            throw APIError.invalidResponse
         }
         
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        
-        switch httpResponse.statusCode {
-            case 200...299:
-                let result = try decoder.decode(responseType, from: data)
-                return result
-            default:
-                throw URLError(.badServerResponse)
+        guard (200...299).contains(httpResponse.statusCode) else {
+            var message = HTTPURLResponse.localizedString(forStatusCode: httpResponse.statusCode)
+
+            if let errorJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let reason = errorJSON["reason"] as? String {
+                message = reason
+            } else if let responseText = String(data: data, encoding: .utf8),
+                      !responseText.isEmpty {
+                message = responseText
+            }
+
+            throw APIError.httpError(statusCode: httpResponse.statusCode, message: message)
         }
+
+        return data
     }
 }
