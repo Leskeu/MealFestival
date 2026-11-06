@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct RegisterView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(UserStore.self) private var userStore
 
     @State private var viewModel = RegisterViewModel()
+    @State private var isSubmitting = false
 
     var body: some View {
 
@@ -55,7 +58,20 @@ struct RegisterView: View {
                 }
 
                 Button("Register") {
-                    viewModel.validate()
+                    guard !isSubmitting else { return }
+                    isSubmitting = true
+
+                    Task {
+                        defer { isSubmitting = false }
+
+                        let token: String? = await viewModel.setRegisterRequest()
+
+                        if let token = token {
+                            if !userStore.setToken(token: token) {
+                                viewModel.errorMessage = "Impossible d'enregistrer la session. Réessayez."
+                            }
+                        }
+                    }
                 }
                 .foregroundStyle(.white)
                 .font(.title3)
@@ -70,12 +86,27 @@ struct RegisterView: View {
                     )
                     .fill(.jungle)
                 )
+                .disabled(isSubmitting)
+
+                Button("Login") {
+                    dismiss()
+                }
+                .foregroundStyle(.white)
+                .font(.title3)
+                .disabled(isSubmitting)
             }
             .padding(.horizontal, 20)
         }
+        .navigationTitle("Register")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarColorScheme(.dark, for: .navigationBar)
+        .navigationBarBackButtonHidden(isSubmitting)
     }
 }
 
 #Preview {
-    RegisterView()
+    NavigationStack {
+        RegisterView()
+    }
+    .environment(UserStore())
 }

@@ -15,6 +15,7 @@ struct LoginView: View {
     
     @State private var email:String = "mail@truc.fr"
     @State private var password: String = "bon-mot-de-passe"
+    @State private var isSubmitting = false
     
     var body: some View {
         ZStack {
@@ -42,6 +43,7 @@ struct LoginView: View {
                         .background(.white)
                         .cornerRadius(20)
                         .frame(maxWidth: 350)
+                        .textInputAutocapitalization(.never)
                 }
                 
                 if let errorMessage = loginVM.errorMessage {
@@ -51,14 +53,21 @@ struct LoginView: View {
                 }
                 
                 Button {
+                    guard !isSubmitting else { return }
+                    isSubmitting = true
+
                     Task {
+                        defer { isSubmitting = false }
+
                         let token: String? = await loginVM.setLoginRequest(
                             email: email,
                             password: password
                         )
 
                         if let token = token {
-                            userStore.setToken(token: token)
+                            if !userStore.setToken(token: token) {
+                                loginVM.errorMessage = "Impossible d'enregistrer la session. Réessayez."
+                            }
                         }
                     }
                 } label: {
@@ -70,16 +79,25 @@ struct LoginView: View {
                         .background(.jungle)
                         .cornerRadius(20)
                 }
-                Text("Register")
-                    .foregroundStyle(.white)
-                    .font(.title3)
+                .disabled(isSubmitting)
+
+                NavigationLink {
+                    RegisterView()
+                } label: {
+                    Text("Register")
+                }
+                .foregroundStyle(.white)
+                .font(.title3)
+//                .disabled(isSubmitting)
             }
         }
     }
 }
 
 #Preview {
-    LoginView()
-        .environment(LoginViewModel())
-        .environment(UserStore())
+    NavigationStack {
+        LoginView()
+    }
+    .environment(LoginViewModel())
+    .environment(UserStore())
 }
